@@ -96,13 +96,16 @@ export function canvasInit() {
       context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       context.fillStyle = this.color;
       context.fill();
-      context.stroke();
       context.closePath();
     };
   }
 
-  function animate() {
-    requestAnimationFrame(animate);
+var lastTime = 0;
+
+  function tick(currentTime: number) {
+    const deltaTime = currentTime - lastTime;
+    // ... update game elements using deltaTime
+
 
     context.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < ballArray.length; i++) {
@@ -111,11 +114,14 @@ export function canvasInit() {
 
     context.beginPath();
     context.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2, false);
-    context.fillStyle = "red";
+    context.fillStyle = "#37474F";
     context.fill();
-    context.stroke();
     context.closePath();
+    
+
+    lastTime = currentTime;
+    requestAnimationFrame(tick);    
   }
 
-  animate();
+  tick(lastTime);
 }
