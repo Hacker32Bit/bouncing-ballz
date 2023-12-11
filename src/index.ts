@@ -1,4 +1,5 @@
 import { hello } from "./test";
+import "./index.css"
 
 console.log(hello())
 
