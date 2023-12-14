@@ -58,3 +58,31 @@ span {
   text-align: center;
   margin: 0;
 }
+
+.checkbox-wrapper {
+  margin-bottom: 5px;
+}
+
+.checkbox-wrapper input {
+  float: left;
+}
+
+.checkbox-wrapper label {
+  float: left;
+  margin: 0 5px;
+}
+
+.form-group button {
+  background-color: #455A64;
+  border: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 5px 10px;
+  color: #fafafa;
+}
+
+.form-group button:hover {
+  cursor: pointer;
+  background-color: #546E7A;
+  outline: 2px solid #263238;
+}
