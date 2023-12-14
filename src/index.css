@@ -10,7 +10,7 @@ body {
   overflow: hidden;
 }
 
-body #root {
+body .root {
   height: 100vh;
 }
 
@@ -33,6 +33,7 @@ input {
     margin-top: 2px;
   display: block;
   border: 0px;
+  cursor: pointer;
 }
 
 .form-group {
@@ -51,4 +52,9 @@ canvas {
   margin: 0;
   padding: 0;
   cursor: pointer;
+}
+
+span {
+  text-align: center;
+  margin: 0;
 }

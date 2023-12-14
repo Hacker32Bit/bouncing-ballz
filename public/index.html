@@ -6,8 +6,33 @@
     <title>Bouncing Ballz</title>
   </head>
   <body>
-    <div id="root">
-      <h1>Loading...</h1>
+    <div class="root">
+      <div id="canvas-frame"></div>
+      <header>
+        <h1>Bouncing Ballz</h1>
+        <form>
+          <div class="form-group">
+            <label for="color">Color:</label>
+            <input type="color" id="color" name="color" />
+          </div>
+          <div class="form-group">
+            <label for="radius">Radius (between 5 and 100 in px):</label>
+            <input type="range" id="radius" name="radius" min="5" max="100" />
+            <span><output id="radiusOutput"></output> px</span>
+          </div>
+          <div class="form-group">
+            <label for="elasticity">Elasticity (between 1 and 99 in %):</label>
+            <input
+              type="range"
+              id="elasticity"
+              name="elasticity"
+              min="1"
+              max="99"
+            />
+            <span><output id="elasticityOutput"></output> %</span>
+          </div>
+        </form>
+      </header>
     </div>
   </body>
 </html>
