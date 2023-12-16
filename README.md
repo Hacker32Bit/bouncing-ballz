@@ -6,7 +6,8 @@ Users can click on the screen to spawn a circle. This circle should realisticall
 
 ## Requirement environments
 For using this project, you must have NodeJS v16 or higher. 
-See about NodeJS [here](https://nodejs.org/en).
+
+See about NodeJS [here](https://nodejs.org/en).<br>
 How to install NodeJS for your system use [google](https://google.com).
 
 ## Installation
