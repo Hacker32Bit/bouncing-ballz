@@ -1,18 +1,18 @@
-function randomIntFromRange(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+import { getLocalStorage, initLocalStorage } from "./lib/LocalStorageManagment";
+import { eventsListeners } from "./lib/EventListeners";
+import { BallProps, MouseProps } from "./interfaces";
 
-function getRandomColor(): string {
-  return "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
+// Init const gravity, ballId and ballArray;
+export const GRAVITY = 0.098;
+export let ballId = 0;
+export function incBallId() {
+  return ballId++;
 }
+export const ballArray: any = [];
 
 export function canvasInit() {
   // Check if params exits in local storage. If not init defaults values
-  if (!localStorage.getItem("color")) localStorage.setItem("color", "#9C27B0");
-  if (!localStorage.getItem("radius")) localStorage.setItem("radius", "50");
-  if (!localStorage.getItem("elasticity"))
-    localStorage.setItem("elasticity", "50");
-  if (!localStorage.getItem("random")) localStorage.setItem("random", "false");
+  initLocalStorage();
 
   // get inputs elements
   const colorInput = document.getElementById("color");
@@ -22,121 +22,48 @@ export function canvasInit() {
   const generateRandomButton = document.getElementById("generateRandom");
   const radiusOutput = document.getElementById("radiusOutput");
   const elasticityOutput = document.getElementById("elasticityOutput");
-
-  // Init inputs values from localStorage
-  (colorInput as HTMLInputElement).value = localStorage.getItem("color");
-  (radiusInput as HTMLInputElement).valueAsNumber =
-    +localStorage.getItem("radius");
-  (elasticityInput as HTMLInputElement).valueAsNumber =
-    +localStorage.getItem("elasticity");
-  radiusOutput.innerHTML = localStorage.getItem("radius");
-  elasticityOutput.innerHTML = localStorage.getItem("elasticity");
-
-  // Add events listeners for handle changes and save in localstorage
-  colorInput.addEventListener("input", (event) => {
-    const { target } = event;
-    localStorage.setItem("color", (target as HTMLInputElement).value);
-    console.log("Color: ", localStorage.getItem("color"));
-  });
-  radiusInput.addEventListener("input", (event) => {
-    const { target } = event;
-    localStorage.setItem(
-      "radius",
-      (target as HTMLInputElement).valueAsNumber.toString()
-    );
-    radiusOutput.innerHTML = localStorage.getItem("radius");
-    console.log("Radius: ", localStorage.getItem("radius"));
-  });
-  elasticityInput.addEventListener("input", (event) => {
-    const { target } = event;
-    localStorage.setItem(
-      "elasticity",
-      (target as HTMLInputElement).valueAsNumber.toString()
-    );
-    elasticityOutput.innerHTML = localStorage.getItem("elasticity");
-    console.log("Elasticity: ", localStorage.getItem("elasticity"));
-  });
-  randomInput.addEventListener("input", (event) => {
-    const { target } = event;
-    localStorage.setItem(
-      "random",
-      (target as HTMLInputElement).checked.toString()
-    );
-    console.log("Random: ", localStorage.getItem("random"));
-  });
-  generateRandomButton.addEventListener("click", () => {
-    let colorOutput = document.getElementById("color");
-
-    let randomColor = getRandomColor();
-    let randomRadius = randomIntFromRange(5, 100).toString();
-    let randomElasticity = randomIntFromRange(5, 100).toString();
-
-    localStorage.setItem("color", randomColor);
-    localStorage.setItem("radius", randomRadius);
-    localStorage.setItem("elasticity", randomElasticity);
-
-    //console.log(radiusOutput);
-    (colorOutput as HTMLInputElement).value = localStorage.getItem("color");
-    (radiusInput as HTMLInputElement).value = localStorage.getItem("radius");
-    (elasticityInput as HTMLInputElement).value =
-      localStorage.getItem("elasticity");
-    radiusOutput.innerHTML = localStorage.getItem("radius");
-    elasticityOutput.innerHTML = localStorage.getItem("elasticity");
-  });
-
+  const removeLastBall = document.getElementById("removeLastBall");
+  const removeFirstBall = document.getElementById("removeFirstBall");
+  const removeAllBalls = document.getElementById("removeAllBalls");
+  const ballCounts = document.getElementById("balls-counts");
   const canvas = <HTMLCanvasElement>document.getElementById("gameFrame");
   const context = canvas.getContext("2d");
 
   // Init mouse position as default
-  const mouse: { x: number; y: number } = {
+  const mouse: MouseProps = {
     x: innerWidth / 2,
     y: innerHeight / 2,
   };
 
-  // Init const gravity, ballId and ballArray;
-  const GRAVITY = 0.098;
-  var ballId = 0;
-  const ballArray: any = [];
+  // Init inputs values from localStorage
+  getLocalStorage(
+    colorInput,
+    radiusInput,
+    elasticityInput,
+    randomInput,
+    radiusOutput,
+    elasticityOutput
+  );
 
-  // Resize the canvas to fill browser window dynamically
-  window.addEventListener("resize", resizeCanvas, false);
+  // Add events listeners for handle changes and save in localstorage
+  eventsListeners(
+    colorInput,
+    radiusInput,
+    elasticityInput,
+    randomInput,
+    radiusOutput,
+    elasticityOutput,
+    removeLastBall,
+    removeAllBalls,
+    removeFirstBall,
+    ballCounts,
+    generateRandomButton,
+    canvas,
+    mouse,
+    Ball
+  );
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  resizeCanvas();
-
-  // Mouse move event
-  window.addEventListener("mousemove", function (event) {
-    mouse.x = event.clientX;
-    mouse.y = event.clientY;
-  });
-
-  // Mouse click event and create ball
-  window.addEventListener("click", function (event) {
-    const { target } = event;
-
-    if ((target as HTMLElement).id === "gameFrame") {
-      var color = localStorage.getItem("color");
-      var radius = +localStorage.getItem("radius");
-      var elasticity = +localStorage.getItem("elasticity");
-      var x = event.clientX;
-      var y = event.clientY;
-      var dx = 0;
-      var dy = 0;
-      if (ballArray.length >= 15) ballArray.shift();
-      ballArray.push(
-        new Ball(ballId++, x, y, dx, dy, radius, elasticity, color)
-      );
-
-      if (localStorage.getItem("random") !== "false") {
-        generateRandomButton.click();
-      }
-    }
-  });
-
+  // define Ball object
   function Ball(
     ballId: number,
     x: number,
@@ -175,7 +102,7 @@ export function canvasInit() {
       if (this.dy < 0.1 && this.dy > -0.1) this.dy = 0;
       if (this.dx < 0.1 && this.dx > -0.1) this.dx = 0;
 
-      ballArray.find((ball) => {
+      ballArray.find((ball: BallProps) => {
         var distance = Math.hypot(ball.x - this.x, ball.y - this.y);
 
         if (
@@ -227,6 +154,7 @@ export function canvasInit() {
 
   var lastTime = 0;
 
+  // tick function
   function tick(currentTime: number) {
     const deltaTime = currentTime - lastTime;
     // ... update game elements using deltaTime
@@ -258,5 +186,5 @@ export function canvasInit() {
     context.closePath();
   }
 
-  tick(lastTime);
+  requestAnimationFrame(tick);
 }

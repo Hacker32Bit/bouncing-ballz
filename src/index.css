@@ -43,7 +43,8 @@ input {
   justify-content: center;
 }
 
-header h1 {
+.title {
+  width: 185px;
   padding: 0 20px;
   float: left;
 }
@@ -72,7 +73,7 @@ span {
   margin: 0 5px;
 }
 
-.form-group button {
+button {
   background-color: #455A64;
   border: 0;
   border-radius: 5px;
@@ -81,7 +82,7 @@ span {
   color: #fafafa;
 }
 
-.form-group button:hover {
+button:hover {
   cursor: pointer;
   background-color: #546E7A;
   outline: 2px solid #263238;

@@ -9,7 +9,9 @@
     <div class="root">
       <div id="canvas-frame"></div>
       <header>
-        <h1>Bouncing Ballz</h1>
+        <div class="title">
+          <h2>Bouncing Ballz<sup id="balls-counts"></sup></h2>
+        </div>
         <form>
           <div class="form-group">
             <label for="color">Color:</label>
@@ -33,14 +35,21 @@
           </div>
           <div class="form-group">
             <div class="checkbox-wrapper">
-              <input
-                type="checkbox"
-                id="random"
-                name="random"
-              />
+              <input type="checkbox" id="random" name="random" />
               <label for="random">All time randoms values </label>
             </div>
-            <button id="generateRandom" type="button">Generate randoms values</button>
+            <button id="generateRandom" type="button">
+              Generate randoms values
+            </button>
+          </div>
+          <div class="form-group">
+            <button id="removeLastBall" type="button">Remove last ball</button>
+          </div>
+          <div class="form-group">
+            <button id="removeFirstBall" type="button">Remove first ball</button>
+          </div>
+          <div class="form-group">
+            <button id="removeAllBalls" type="button">Remove all balls</button>
           </div>
         </form>
       </header>
